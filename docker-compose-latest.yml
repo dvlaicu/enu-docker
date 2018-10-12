@@ -1,17 +1,10 @@
 version: "3"
 
 services:
-  builder:
-    build:
-      context: builder
-    image: eosio/builder
-
-  enunoded:
-    build:
-      context: .
-    image: eosio/eos
-    command: /opt/enumivo/bin/enunoded.sh --data-dir /opt/enumivo/bin/data-dir -e --http-alias=nodeosd:8888 --http-alias=127.0.0.1:8888 --http-alias=localhost:8888
-    hostname: enunoded
+  enunode:
+    image: enumivo/enumivo:latest
+    command: /opt/enumivo/bin/enunode.sh --data-dir /opt/enumivo/bin/data-dir -e --http-alias=enunode:8888 --http-alias=127.0.0.1:8888 --http-alias=localhost:8888
+    hostname: enunode
     ports:
       - 8888:8888
       - 9876:9876
@@ -23,18 +16,18 @@ services:
       - IPC_LOCK
     stop_grace_period: 10m
 
-  keosd:
-    image: eosio/eos
-    command: /opt/enumivo/bin/enuwallet --wallet-dir /opt/eosio/bin/data-dir --http-server-address=127.0.0.1:8900 --http-alias=enuwallet:8900 --http-alias=localhost:8900
+  enuwallet:
+    image: enumivo/enumivo:latest
+    command: /opt/enumivo/bin/enuwallet --wallet-dir /opt/enumivo/bin/data-dir --http-server-address=127.0.0.1:8900 --http-alias=enuwallet:8900 --http-alias=localhost:8900
     hostname: enuwallet
     links:
-      - enunodedd
+      - enunode
     volumes:
       - enuwallet-data-volume:/opt/enumivo/bin/data-dir
     stop_grace_period: 10m
 
 volumes:
-  enunode-data-volume:
-    external: true
-  enuwallet-data-volume:
-    external: true
+ enunode-data-volume:
+   external: true
+ enuwallet-data-volume:
+   external: true

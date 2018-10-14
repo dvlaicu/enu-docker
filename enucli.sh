@@ -4,7 +4,7 @@
 # Go into cmd loop: sudo ./enucli.sh
 # Run single cmd:  sudo ./enucli.sh <enucli paramers>
 
-PREFIX="docker-compose exec enunoded enucli"
+PREFIX="docker-compose exec enunode enucli"
 if [ -z $1 ] ; then
   while :
   do
